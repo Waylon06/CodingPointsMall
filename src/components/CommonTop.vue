@@ -7,15 +7,25 @@
         <li>我的积分: --</li>
         <li>获取积分</li>
         <li>叩丁狼官网</li>
-        <li>登录</li>
+        <li @click="showLogin">登录</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import PubSub from 'pubsub-js';
 export default {
   name: "CommonTop",
+  data() {
+    return {
+    }
+  },
+  methods: {
+    showLogin() {
+      PubSub.publish('isShow', true)
+    }
+  }
 };
 </script>
 

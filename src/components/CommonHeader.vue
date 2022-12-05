@@ -9,15 +9,21 @@
           v-for="item in menu"
           :key="item.name"
           @click="clickMenu(item)"
-          :class="$route.path == item.path? 'active': ''"
+          :class="$route.path == item.path ? 'active' : ''"
         >
           {{ item.label }}
         </li>
       </ul>
     </div>
     <div class="search">
-      <input type="text" placeholder="搜索全部商品直接回车" />
-      <span><img src="@/assets/img/search.png" /></span>
+      <input
+        type="text"
+        placeholder="搜索全部商品直接回车"
+        name="keyword"
+        @keyup.enter="search()"
+        v-model="keyword"
+      />
+      <span @click="search()"><img src="@/assets/img/search.png" /></span>
     </div>
   </header>
 </template>
@@ -54,11 +60,15 @@ export default {
           label: "专属福利",
         },
       ],
+      keyword: "",
     };
   },
   methods: {
     clickMenu(item) {
       this.$router.push(item.path);
+    },
+    search() {
+      this.$router.push("/goods?keyword=" + this.keyword).catch((err) => {});
     },
   },
 };
@@ -66,6 +76,7 @@ export default {
 
 <style lang="less" scoped>
 header {
+  height: 118px;
   display: flex;
   justify-content: space-between;
   align-items: center;

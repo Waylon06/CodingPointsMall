@@ -4,6 +4,7 @@
     <common-header />
     <router-view />
     <common-footer />
+    <common-login/>
   </div>
 </template>
 
@@ -11,12 +12,14 @@
 import CommonTop from "@/components/CommonTop.vue";
 import CommonHeader from "@/components/CommonHeader.vue";
 import CommonFooter from "@/components/CommonFooter.vue";
+import CommonLogin from "@/components/CommonLogin.vue"
 
 export default {
   components: {
     CommonTop,
     CommonHeader,
     CommonFooter,
+    CommonLogin
   },
 };
 </script>
