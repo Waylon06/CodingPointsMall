@@ -1,15 +1,15 @@
 <template>
-  <div>
-    专属福利
+  <div class="w">
+    <img class="img404" src="@/assets/img/404.jpg" />
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.img404 {
+  width: 100%;
+}
 </style>

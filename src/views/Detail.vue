@@ -47,13 +47,13 @@
                   >数量 <span>*礼品库存{{ productInfo.stock }}件</span></strong
                 >
                 <div class="step">
-                  <div class="reduce">-</div>
+                  <div class="reduce" @click="stepLimit(-1)">-</div>
                   <input type="text" disabled v-model="stepNum" />
-                  <div class="add">+</div>
+                  <div class="add" @click="stepLimit(1)">+</div>
                 </div>
               </div>
               <div class="btns">
-                <div class="addToCart">加入购物车</div>
+                <div class="addToCart" @click="addToCart">加入购物车</div>
                 <div class="buyNow">立即购买</div>
               </div>
             </div>
@@ -125,7 +125,8 @@
 </template>
 
 <script>
-import { getProductDetail } from "../api/data";
+import { mapMutations } from "vuex";
+import { getProductDetailAPI, addToCartAPI, getUserInfoAPI } from "../api/data";
 import CommonTag from "../components/CommonTag.vue";
 export default {
   components: {},
@@ -147,14 +148,12 @@ export default {
     this.productDetail(id);
   },
   methods: {
+    ...mapMutations(["changeCartTotal"]),
     async productDetail(id) {
-      let data = await getProductDetail(id);
-      console.log(data);
-      this.tags = data.nav;
-      this.productInfo = data.productInfo;
-      this.more = data.themYouCanBuy;
-      console.log(this.productInfo);
-      console.log(this.more);
+      let data = await getProductDetailAPI(id);
+      this.tags = data.data.nav;
+      this.productInfo = data.data.productInfo;
+      this.more = data.data.themYouCanBuy;
       this.productInfo.description = this.productInfo.description.replaceAll(
         "upload",
         this.imgUrl + "/upload"
@@ -166,6 +165,29 @@ export default {
     changePage(item) {
       this.$router.push(`/detail?id=${item.id}`);
       this.productDetail(item.id);
+    },
+    async addToCart() {
+      let res = await addToCartAPI({
+        productId: this.$route.query.id,
+        total: this.stepNum,
+        modified: 1,
+      });
+      console.log(res);
+      if (res.code == 0) {
+        let userInfo = await getUserInfoAPI();
+        this.changeCartTotal(userInfo.data.cartTotal);
+      } else {
+        alert("您还没登录呢");
+      }
+    },
+    stepLimit(val) {
+      if (
+        (val == -1 && this.stepNum == 1) ||
+        (val == 1 && this.stepNum >= this.productInfo.stock)
+      ) {
+        return;
+      }
+      this.stepNum = this.stepNum + val;
     },
   },
 };

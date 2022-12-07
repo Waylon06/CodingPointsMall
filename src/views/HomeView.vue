@@ -35,7 +35,7 @@ import CommonSwiper from "@/components/CommonSwiper";
 import CommonTitle from "@/components/CommonTitle";
 import CommonList from "@/components/CommonList";
 
-import { getJPData, getHotData } from "../api/data.js";
+import { getJPDataAPI, getHotDataAPI } from "../api/data.js";
 export default {
   name: "HomeView",
   components: {
@@ -44,11 +44,11 @@ export default {
     CommonList,
   },
   async created() {
-    let jp = await getJPData();
-    this.JPDataList = jp.data.records;
+    let jp = await getJPDataAPI();
+    this.JPDataList = jp.data.data.records;
 
-    let hot = await getHotData();
-    this.HotDataList = hot.data.records;
+    let hot = await getHotDataAPI();
+    this.HotDataList = hot.data.data.records;
   },
   data() {
     return {

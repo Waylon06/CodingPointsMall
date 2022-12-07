@@ -1,6 +1,6 @@
 <template>
-  <div>
-    我的订单
+  <div class="w">
+    <img class="img404" src="@/assets/img/404.jpg">
   </div>
 </template>
 
@@ -10,6 +10,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.img404 {
+  width: 100%;
+}
 </style>

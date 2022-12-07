@@ -1,13 +1,18 @@
 import axios from "./axios.js";
+import qs from 'qs'
 
-export const getJPData = () => axios.get('/products/recommend');
+export const getJPDataAPI = () => axios.get('/products/recommend');
 
-export const getHotData = () => axios.get('/products/hot');
+export const getHotDataAPI = () => axios.get('/products/hot');
 
-export const getProductDetail = (id) => axios.get('/products/' + id)
+export const getProductDetailAPI = (id) => axios.get('/products/' + id)
 
-export const getAllGoods = (params) => axios.get('/products', { params })
+export const getAllGoodsAPI = (params) => axios.get('/products', { params })
 
-export const sendSMS = (phone) => axios.post('/sendSMS', {phone})
+export const sendSMSAPI = (phone) => axios.post('/sendSMS', qs.stringify(phone))
 
-export const phoneRegin = (params) => axios.post('/phoneRegin', { params })
+export const phoneReginAPI = (params) => axios.post('/phoneRegin', qs.stringify(params))
+
+export const getUserInfoAPI = () => axios.get('/shop/userProfiles')
+
+export const addToCartAPI = (params) => axios.post('/shop/carts/add', qs.stringify(params))

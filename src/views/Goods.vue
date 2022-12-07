@@ -29,7 +29,7 @@
 
 <script>
 import CommonList from "@/components/CommonList";
-import { getAllGoods } from "../api/data.js";
+import { getAllGoodsAPI } from "../api/data.js";
 export default {
   data() {
     return {
@@ -103,9 +103,8 @@ export default {
   methods: {
     async GoodsInfo() {
       this.params.keyword = this.$route.query.keyword || this.params.keyword;
-      let data = await getAllGoods(this.params);
-      console.log(data);
-      this.allGoods = data;
+      let res = await getAllGoodsAPI(this.params);
+      this.allGoods = res.data;
     },
     changeTypeActive(type) {
       this.filterList.byType.active = type;

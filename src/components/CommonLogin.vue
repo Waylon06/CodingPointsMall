@@ -65,7 +65,8 @@
 <script>
 import PubSub from "pubsub-js";
 import { testPhoneNum } from "../utils";
-import { sendSMS, phoneRegin } from "@/api/data";
+import { sendSMSAPI, phoneReginAPI, getUserInfoAPI } from "@/api/data";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -92,6 +93,7 @@ export default {
     });
   },
   methods: {
+    ...mapMutations(["changeIsLogined", "changeCartTotal", "changeUserInfo"]),
     async sendVerifyCode() {
       if (!this.verifyPhoneNum()) {
         alert("手机号错误");
@@ -101,7 +103,7 @@ export default {
         alert("请完成模块验证");
         return;
       }
-      await sendSMS(this.phoneNum);
+      await sendSMSAPI(this.phoneNum);
       this.showOrBan = false;
       let timer = setInterval(() => {
         if (this.time == 0) {
@@ -122,13 +124,24 @@ export default {
         alert("请完成模块验证");
         return;
       }
-      let data = await phoneRegin({
+      let res = await phoneReginAPI({
         verifyCode: this.verifyCode,
         phone: this.phoneNum,
       });
-      console.log(data);
-      if (data.code == 200) {
-        log("yes");
+      console.log(res);
+      if (res.code == 0) {
+        this.isShow = false;
+        this.changeIsLogined(true);
+        let token = res["x-auth-token"];
+        console.log(token);
+        sessionStorage.setItem("token", token);
+        let resp = await getUserInfoAPI();
+        console.log(resp);
+
+        if (resp.code == 0) {
+          this.changeUserInfo( resp.data.userInfo)
+          this.changeCartTotal(resp.data.cartTotal)
+        }
       }
     },
     verifyPhoneNum() {

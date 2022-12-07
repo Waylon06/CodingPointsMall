@@ -14,7 +14,6 @@ import 'swiper'
 Vue.prototype.imgUrl = 'https://sc.wolfcode.cn'
 Vue.config.productionTip = false
 
-
 Vue.use(VueLazyload)
 Vue.use(PubSub)
 Vue.use(SlideVerify);
