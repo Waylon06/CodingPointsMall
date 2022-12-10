@@ -38,7 +38,9 @@
           "
           @click="signIn"
         >
-          <span class="sign-li-month">{{ item.signDate.split("-")[1] }}</span>
+          <span class="sign-li-month">{{
+            convertToEngMonth(item.signDate.split("-")[1])
+          }}</span>
           <span class="sign-li-date">{{ item.signDate.split("-")[2] }}</span>
           <span class="sign">签到</span>
           <!-- style="color: #fe7b28; font-size: 25px; font-weight: 500;" -->
@@ -46,7 +48,7 @@
       </ul>
       <ul class="sign-ul2">
         <li class="sign-li" v-for="(item, index) in signIns" :key="index">
-          <span>第{{index + 1}}天</span>
+          <span>第{{ index + 1 }}天</span>
           <img src="@/assets/img/monad.png" />
         </li>
       </ul>
@@ -118,6 +120,36 @@ export default {
   },
   computed: {
     ...mapState(["userInfo"]),
+    convertToEngMonth() {
+      return function (month) {
+        switch (month) {
+          case "01":
+            return "Jan";
+          case "02":
+            return "Feb";
+          case "03":
+            return "Mar";
+          case "04":
+            return "Apr";
+          case "05":
+            return "May";
+          case "06":
+            return "Jun";
+          case "07":
+            return "Jul";
+          case "08":
+            return "Aug";
+          case "09":
+            return "Sept";
+          case "10":
+            return "Oct";
+          case "11":
+            return "Nov";
+          case "12":
+            return "Dec";
+        }
+      };
+    },
   },
 };
 </script>
