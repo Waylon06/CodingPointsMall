@@ -16,3 +16,11 @@ export const phoneReginAPI = (params) => axios.post('/phoneRegin', qs.stringify(
 export const getUserInfoAPI = () => axios.get('/shop/userProfiles')
 
 export const addToCartAPI = (params) => axios.post('/shop/carts/add', qs.stringify(params))
+
+export const getCartInfoAPI = () => axios.get('/shop/carts')
+
+export const deleteCartInfoAPI = (id) => axios.delete(`/shop/carts?productIds=${id}`)
+
+export const getUserSignInsAPI = () => axios.get('/shop/signIns')
+
+export const clickToSignInAPI = () => axios.post('/shop/signIns')

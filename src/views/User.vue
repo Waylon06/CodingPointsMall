@@ -1,57 +1,157 @@
 <template>
-  <div class="w">
-    <aside>
-      <img :src="userInfo.headImg" />
-      <div class="user">
-        <span>{{userInfo.username}}:</span>
-        <span>{{userInfo.coin}}分</span>
-      </div>
-      <div class="trade">
-        <img src="@/assets/img/transaction.png">
-        交易管理
-      </div>
-    </aside>
+  <div class="person_page w">
+    <div class="person wrap">
+      <!--面包屑START-->
+      <!--面包屑END-->
+      <main>
+        <aside>
+          <div
+            class="avatar"
+            :style="{ backgroundImage: `url(${userInfo.headImg})` }"
+          ></div>
+          <div class="name">
+            {{ userInfo.username }}
+            <span style="cursor: pointer" @click="loginOut">[退出]</span>
+          </div>
+          <div class="title">
+            <img
+              src="../assets/img/transaction.png"
+              width="20"
+              alt="交易管理"
+            />
+            交易管理
+          </div>
+          <ul class="list">
+            <li
+              :class="/\/discount/g.test($route.path) ? 'active' : ''"
+              @click="$router.push('/discount')"
+            >
+              个人中心
+            </li>
+            <li :class="/\/person1/g.test($route.path) ? 'active' : ''">
+              我的订单
+            </li>
+            <li
+              :class="/\/cart/g.test($route.path) ? 'active' : ''"
+              @click="$router.push('/cart')"
+            >
+              购物车
+            </li>
+            <li :class="/\/person1/g.test($route.path) ? 'active' : ''">
+              消息通知
+            </li>
+            <li :class="/\/person1/g.test($route.path) ? 'active' : ''">
+              积分明细
+            </li>
+            <li :class="/\/person1/g.test($route.path) ? 'active' : ''">
+              积分攻略
+            </li>
+          </ul>
+          <div class="title">
+            <img
+              src="../assets/img/transaction.png"
+              width="20"
+              alt="交易管理"
+            />
+            个人信息管理
+          </div>
+          <ul class="list">
+            <li>地址管理</li>
+            <li>账号安全</li>
+          </ul>
+        </aside>
+        <article><router-view></router-view></article>
+      </main>
+    </div>
   </div>
 </template>
-
 <script>
 import { mapState } from "vuex";
 export default {
+  data() {
+    return {};
+  },
+  components: {},
   methods: {
+    loginOut() {
+      sessionStorage.removeItem("token");
+      this.$router.push("/");
+      this.$router.go(0);
+    },
   },
   computed: {
     ...mapState(["userInfo"]),
-
-  }
+  },
 };
 </script>
-
 <style lang="less" scoped>
-aside {
-  width: 200px;
-  margin-right: 60px;
-  background: #e7e7e7;
-  img {
-    width: 100px;
-    height: 100px;
-    display: block;
-    margin: 30px auto 19px;
-  }
-  .user {
-    text-align: center;
-    margin-bottom: 43px;
-  }
-  .trade {
+.person_page {
+  background: #fff;
+  main {
+    border-top: 1px solid #e1e1e1;
+    padding: 28px 0 48px;
     display: flex;
-    align-items: center;
-    padding-left: 18px;
-    margin-bottom: 14px;
-    // width: 182px;
-    height: 20px;
-    img {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
+    justify-content: space-between;
+    background: #fff;
+    aside {
+      width: 200px;
+      height: 740px;
+      background: #e7e7e7;
+      margin-right: 60px;
+      box-sizing: border-box;
+      padding: 30px 18px 0;
+      .avatar {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+      .name {
+        text-align: center;
+        margin-top: 19px;
+        margin-bottom: 43px;
+        span {
+          text-decoration: underline;
+          color: #2a5df1;
+        }
+      }
+      .title {
+        font-size: 16px;
+        color: #333333;
+        display: flex;
+        align-items: center;
+        margin-bottom: 14px;
+        img {
+          margin-right: 6px;
+        }
+      }
+      .list {
+        li {
+          margin-bottom: 17px;
+          font-weight: 300;
+          color: #666666;
+          cursor: pointer;
+          &.active {
+            color: #0a328e;
+            font-weight: bold;
+            &::before {
+              width: 2px;
+              height: 14px;
+              background: #0a328e;
+              display: inline-block;
+              content: "";
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+    article {
+      flex: 1;
+      padding: 20px 0 0 0px;
+      box-sizing: border-box;
+      background: #fff;
     }
   }
 }

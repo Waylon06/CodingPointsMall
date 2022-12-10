@@ -12,7 +12,7 @@
         <li>获取积分</li>
         <a href="https://www.wolfcode.cn/">叩丁狼官网</a>
         <li @click="showLogin" class="login-btn" v-show="!isLogined">登录</li>
-        <li class="cart-btn" v-show="isLogined">
+        <li class="cart-btn" v-show="isLogined" @click="$router.push('/user/cart')">
           <img src="@/assets/img/cart.png" /><span>购物车</span
           ><b>{{ cartTotal }}</b>
         </li>
@@ -37,7 +37,6 @@ export default {
       let res = await getUserInfoAPI();
       this.changeUserInfo(res.data.userInfo);
       this.changeCartTotal(res.data.cartTotal);
-      console.log(this.userInfo);
     } 
   },
   methods: {

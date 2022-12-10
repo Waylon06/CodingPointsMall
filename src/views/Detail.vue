@@ -125,6 +125,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import { mapMutations } from "vuex";
 import { getProductDetailAPI, addToCartAPI, getUserInfoAPI } from "../api/data";
 import CommonTag from "../components/CommonTag.vue";
@@ -176,6 +177,7 @@ export default {
       if (res.code == 0) {
         let userInfo = await getUserInfoAPI();
         this.changeCartTotal(userInfo.data.cartTotal);
+        this.$router.push('/user/cart')
       } else {
         alert("您还没登录呢");
       }
