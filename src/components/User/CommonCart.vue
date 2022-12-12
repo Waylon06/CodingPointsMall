@@ -3,8 +3,14 @@
     <table>
       <thead>
         <tr>
-          <th style="width: 8%">
-            <i :class="checkAll ? 'iconfont icon-xuanzekuang' : 'iconfont icon-xuanzekuang-duoxuanweixuan'"></i>
+          <th style="width: 8%" @click="clickToCheckAll">
+            <i
+              :class="
+                checkAll
+                  ? 'iconfont icon-xuanzekuang'
+                  : 'iconfont icon-xuanzekuang-duoxuanweixuan'
+              "
+            ></i>
           </th>
           <th style="width: 30%">礼品信息</th>
           <th>兑换分数</th>
@@ -14,16 +20,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item,index) in cartData" :key="item.id">
-          <td>
-            <!-- <i
+        <tr v-for="(item, index) in cartData" :key="item.id">
+          <td @click="checkItem(index)">
+            <i
               :class="
-                //checkList[index]
-                  ? 'iconfont icon-yduifuxuankuangxuanzhong'
-                  : 'iconfont icon-yduifuxuankuang'
+                item.checked
+                  ? 'iconfont icon-xuanzekuang'
+                  : 'iconfont icon-xuanzekuang-duoxuanweixuan'
               "
-            ></i> -->
-            <i :class="checkList[index] ? 'iconfont icon-xuanzekuang' : 'iconfont icon-xuanzekuang-duoxuanweixuan'" @click="!checkList[index]"></i>
+            ></i>
           </td>
           <td>
             <section>
@@ -37,9 +42,9 @@
           <td>{{ item.coin }}鸡腿</td>
           <td>
             <div class="step">
-              <span>-</span>
+              <span @click="step(index, -1)">-</span>
               <input type="text" disabled v-model="item.total" />
-              <span>+</span>
+              <span @click="step(index, 1)">+</span>
             </div>
           </td>
           <td>{{ item.totalCost }}鸡腿</td>
@@ -49,7 +54,9 @@
         </tr>
       </tbody>
     </table>
-    <div class="total">总计：<span>0鸡腿</span></div>
+    <div class="total">
+      总计：<span>{{ totalCoin }}鸡腿</span>
+    </div>
     <div class="submit">提交</div>
   </div>
 </template>
@@ -70,12 +77,26 @@ export default {
   mounted() {
     this.getCartInfo();
   },
+  computed: {
+    totalCoin() {
+      let totalCoin = 0;
+      for (let i = 0; i < this.cartData.length; i++) {
+        if (this.cartData[i].checked) {
+          totalCoin += this.cartData[i].total * this.cartData[i].coin;
+        }
+      }
+      return totalCoin;
+    },
+  },
   methods: {
     ...mapMutations(["changeCartTotal"]),
     async getCartInfo() {
       let res = await getCartInfoAPI();
       // console.log(res);
       this.cartData = res.data;
+      for (let i = 0; i < this.cartData.length; i++) {
+        this.$set(this.cartData[i], "checked", false);
+      }
     },
     async deleteCartInfo(id) {
       let res = await deleteCartInfoAPI(id);
@@ -84,6 +105,38 @@ export default {
         this.getCartInfo();
         this.changeCartTotal(this.cartData.length - 1);
       }
+    },
+    clickToCheckAll() {
+      this.checkAll = !this.checkAll;
+      if (this.checkAll) {
+        for (let i = 0; i < this.cartData.length; i++) {
+          this.cartData[i].checked = true;
+        }
+      } else {
+        for (let i = 0; i < this.cartData.length; i++) {
+          this.cartData[i].checked = false;
+        }
+      }
+    },
+    checkItem(index) {
+      let count = 0;
+      this.cartData[index].checked = !this.cartData[index].checked;
+      for (let i = 0; i < this.cartData.length; i++) {
+        if (this.cartData[i].checked) {
+          count++;
+        }
+      }
+      if (count == this.cartData.length) {
+        this.checkAll = true;
+      } else {
+        this.checkAll = false;
+      }
+    },
+    step(index, val) {
+      if (val == -1 && this.cartData[index].total == 1) {
+        return;
+      }
+      this.cartData[index].total += val;
     },
   },
 };
