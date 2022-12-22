@@ -57,7 +57,7 @@
     <div class="total">
       总计：<span>{{ totalCoin }}鸡腿</span>
     </div>
-    <div class="submit">提交</div>
+    <div class="submit" @click="submit">提交</div>
   </div>
 </template>
 <script>
@@ -72,6 +72,7 @@ export default {
       // 单选按钮数组
       checkList: [],
       cartData: [],
+      submitData: []
     };
   },
   mounted() {
@@ -138,6 +139,17 @@ export default {
       }
       this.cartData[index].total += val;
     },
+    submit() {
+      for(let i = 0; i< this.cartData.length; i++) {
+        if(this.cartData[i].checked) {
+          this.submitData.push({
+            id: this.cartData[i].id,
+            total: this.cartData[i].total
+          })
+        }
+      }
+      this.$router.push({path: '/order', query: {submitData: JSON.stringify(this.submitData)}})
+    }
   },
 };
 </script>

@@ -24,3 +24,5 @@ export const deleteCartInfoAPI = (id) => axios.delete(`/shop/carts?productIds=${
 export const getUserSignInsAPI = () => axios.get('/shop/signIns')
 
 export const clickToSignInAPI = () => axios.post('/shop/signIns')
+
+export const orderDataAPI=(params)=>axios.put('/shop/carts',params);
